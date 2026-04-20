@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ app_name }} - Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <h1>{{ app_name }}</h1>
+      <p>Pipeline multi-HubSpot com schema padrão, deduplicação e visão unificada.</p>
+      <button id="run">Executar pipeline</button>
+
+      <section class="grid">
+        <div class="card"><h3>Contatos Unificados</h3><p id="contacts">-</p></div>
+        <div class="card"><h3>Empresas Unificadas</h3><p id="companies">-</p></div>
+        <div class="card"><h3>Taxa de Consentimento (LGPD)</h3><p id="consent">-</p></div>
+        <div class="card"><h3>Duplicados Removidos</h3><p id="duplicates">-</p></div>
+      </section>
+      <pre id="raw"></pre>
+    </main>
+
+    <script>
+      async function refresh() {
+        const res = await fetch('/api/dashboard');
+        const data = await res.json();
+        document.getElementById('contacts').textContent = data.totals.contacts;
+        document.getElementById('companies').textContent = data.totals.companies;
+        document.getElementById('consent').textContent = `${data.consent_rate}%`;
+        const d1 = data.kpis.duplicate_contacts_removed ?? 0;
+        const d2 = data.kpis.duplicate_companies_removed ?? 0;
+        document.getElementById('duplicates').textContent = d1 + d2;
+        document.getElementById('raw').textContent = JSON.stringify(data.kpis, null, 2);
+      }
+
+      document.getElementById('run').addEventListener('click', async () => {
+        await fetch('/pipeline/run', { method: 'POST' });
+        await refresh();
+      });
+
+      refresh();
+    </script>
+  </body>
+</html>
