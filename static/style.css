@@ -1,0 +1,8 @@
+body { font-family: Arial, sans-serif; background:#f3f6fb; color:#1e293b; margin:0; }
+.container{ max-width:980px; margin:24px auto; padding:16px; }
+button{ background:#0f766e; color:#fff; border:none; border-radius:8px; padding:10px 16px; cursor:pointer; }
+.grid{ margin-top:18px; display:grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap:12px; }
+.card{ background:#fff; padding:16px; border-radius:10px; box-shadow:0 1px 3px rgba(0,0,0,.1); }
+.card h3{ margin:0 0 8px; font-size:15px; }
+.card p{ margin:0; font-size:26px; font-weight:bold; color:#0f766e; }
+pre{ margin-top:18px; background:#0b1020; color:#d1fae5; padding:12px; border-radius:8px; overflow:auto; }
